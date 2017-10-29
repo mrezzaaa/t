@@ -1,0 +1,74 @@
+html
+  head
+    title="Logisthink"
+    script(src="/jquery-3.1.1.min.js") <script> $("md-content").hide();</script>
+    link(rel="stylesheet",href="/style.css")
+    link(rel="stylesheet",href="/angular-material.min.css")
+    meta(http-equiv="Content-Security-Policy",content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ https://www.gstatic.com/  'unsafe-inline' 'unsafe-eval'")
+    link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    script(src="/socket.io/socket.io.js")
+    link(rel="manifest",href="/manifest-driver.json")
+    meta(name="viewport",content="width=device-width,initial-scale=1.0")
+    meta(name="theme-color" content="#333")
+    script(src="/angular.min.js")
+    script(src="/angular-animate.min.js")
+    script(src="/angular-aria.min.js")
+    script(src="/angular-material.min.js")
+    script(src="/moment.js")
+    link(rel="icon",href="favicon.png")
+    script(defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAvE45P0o02LXQfy6fSQUoluxgWQYPaCE&libraries=places,geometry&callback=buildMap")
+    script(defer,src="/CustomMarker.js")
+    script(src="/socket-client.js")
+    script(src="/NoSleep.min.js")
+    script(src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js")
+    script(src="/as-driver.js")
+
+  body(ng-app="Logisthink",ng-controller="driverController" ng-init="socketing()")
+    div#loadDriver
+    md-content(layout="column" flex md-theme="dark-grey")
+      md-toolbar.fixed.md-hue-2.md-dark-grey-theme(md-theme="dark-grey")
+        div.md-toolbar-tools(flex)
+          md-button.md-icon-button(ng-click="switchList()")
+            md-icon.material-icons view_list
+          md-button.md-icon-button(ng-click="openChat()")
+            md-icon.material-icons chats
+          span(flex)
+          md-icon.material-icons gps_not_fixed
+          md-switch.md-hue-1.md-dark-blue-theme(ng-theme="dark-blue" aria-label="set to online" ng-true-value="'online'" ng-false-value="'offline'" ng-model="userconnection")
+          md-icon.material-icons gps_fixed
+          span(flex)
+          md-button.md-icon-button(ng-click="switchMap()")
+            md-icon.material-icons maps
+          md-button.md-icon-button(ng-click="logout()")
+            md-icon.material-icons exit_to_app
+      content.map-container(layout="row" flex="100" layout-align="space-between stretch")
+        div.main-map#map
+        div.md-icon-button.md-mini#locate(onclick="locate()")
+          md-icon.material-icons gps_fixed
+        div.md-icon-button.md-mini#traffic
+          md-icon.material-icons traffic
+        div.md-icon-button.md-mini#light
+          md-icon.material-icons brightness_low
+        div.gps_statistic
+          table.md-table
+            tr
+              th Geoloc <td>{{geostatus}}</td>
+            tr
+              th Coordinates <td>{{geolatlng}}</td>
+            tr
+              th Accuracy <td>{{geoaccuracy}}</td>
+            tr
+              th Speed <td>{{geospeed}}</td>
+            tr
+              th Heading <td>{{geoheading}}</td>
+            tr
+              th Altitude <td>{{geoaltitude}}</td>
+      content.tasklist(flex="100"  md-theme="'dark-grey'" layout="column" layout-align="space-between stretch" md-theme-watch)
+        md-list.md-accent(flex)
+          md-list-item.md-primary(ng-repeat="job in joblist track by $index" ng-if="job.delivery_status != 'completed'" ng-click="getOrder(job)")
+            div.md-list-item-text.md-dense.md-primary(flex layout="column")
+              label.md-primary ORDER ID:{{"#"+job.order_id}}
+              small(style="font-size:12px;") {{job.pickup_address.split(",")[ job.pickup_address.split(",").length - 4 ]}} - 
+                small(style="font-size:12px;") {{job.delivery_address.split(",")[job.delivery_address.split(",").length - 4 ]}} 
+              small Status : <i class="{{job.delivery_status}}">{{job.delivery_status =='scheduled' ? 'waiting your confirmation': job.delivery_status}}</i>
+            md-divider

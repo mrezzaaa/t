@@ -1,0 +1,48 @@
+html
+    head
+        title="Logisthink"
+        link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel="stylesheet",href="/angular-material.min.css")
+        meta(name="viewport",content="width=device-width,initial-scale=0.5")
+        link(rel="stylesheet",href="/style.css")
+        script(src="/angular.min.js")
+        script(src="/angular-animate.min.js")
+        script(src="/angular-aria.min.js")
+        script(src="/angular-material.min.js")
+        script(src="/jquery-3.1.1.min.js")
+        link(rel="icon",href="favicon.png")
+
+
+body.dialog-demo-content(layout="row",layout-wrap,layout-margin,layout-align="center",ng-cloak,ng-controller="driverController")
+  md-toolbar.md-accent(layout-wrap,layout-align="center stretch")
+    div.md-toolbar-tools
+      md-button.md-icon-button(aria-label="Cancel",ng-click="closeDialog()").
+        #[md-icon.material-icons arrow_back]
+      label Tambah Supir
+      |
+  |    
+  md-dialog-content(layout-xs="column",layout="row",layout-wrap,layout-padding,layout-align="space-around stretch")
+    md-input-container
+      label Nama
+      input(ng-model="name")
+    md-input-container
+      label Password
+      input(type="password",ng-model="password")
+    md-input-container
+      label Alamat
+      input(ng-model="address")
+    md-input-container
+      label No. HP
+      input(type="number",ng-model="phone")
+    md-input-container
+      label Bergabung
+      md-datepicker(ng-model="driverjoineddate",md-date-locale="ID")
+    md-input-container
+      label Tipe Supir
+      md-select.md-no-underline(ng-model="type",placeholder="Tipe Supir")
+        md-option(value="Karyawan") Karyawan
+        md-option(value="Freelance") Freelance/Supir Lepas
+  md-dialog-actions(layout="row")
+    md-button.md-accent(ng-click="saveDriver()") Save
+    span(flex)
+    md-button.md-primary(ng-click="closeDialog()") Cancel

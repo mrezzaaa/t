@@ -1,0 +1,162 @@
+html
+    head
+        title="Logisthink"
+        meta(http-equiv="Content-Security-Policy",content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'")
+        link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel="stylesheet",href="/angular-material.min.css")
+        script(src="/socket.io/socket.io.js")
+        meta(name="viewport",content="width=device-width,initial-scale=0.5")
+        link(rel="stylesheet",href="/style.css")
+        script(src="/angular.min.js")
+        script(src="/angular-animate.min.js")
+        script(src="/angular-aria.min.js")
+        script(src="/angular-material.min.js")
+        script(src="/jquery-3.1.1.min.js")
+        link(rel="icon",href="favicon.png")
+        script(async,defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5A4BPladAgNIz9PqSxXOgajmjsQx2JyE&libraries=places,geometry")
+        script(src="/order.js")
+
+    body(ng-app="Logisthink",ng-cloak="")
+        div(layout="row",ng-controller="MyController")
+        |
+        md-toolbar.md-whiteframe-2dp.md-hue-1(md-scroll-shrink)
+            |
+            div.md-toolbar-tools
+                |
+                md-button.md-mini.menu(ng-controller="MyController",ng-click="openLeftMenu()").
+                    #[i.material-icons menu]
+                |
+                span(flex)
+                |
+                span(flex)
+                |
+                md-button(href="#jobs",md-truncate) Jobs
+                |
+                md-button(href="#drivers",md-truncate) Drivers
+                |
+                md-button(href="#unassigned",md-truncate) Unassigned
+                |
+                md-button(href="#progress",md-truncate) Progress
+                |
+                md-button(href="#late",md-truncate) Late Jobs
+                |
+                span(flex)
+                |
+                span(flex)
+                |
+                md-button.md-mini.notification.
+                    #[i.material-icons notifications_none]
+                |
+                md-button.md-mini.more.
+                    #[i.material-icons view_module]
+                |
+                md-button.md-fab.user(aria-label="user",style="border-radius:100px;").
+                    #[img(src="https://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png",width="100%",height="70%")]
+        |
+        md-sidenav.md-sidenav-left.md-whiteframe-2dp(flex,md-component-id="left",md-disable-backdrop)
+            |
+            md-toolbar.hue-1
+                |
+                h1.md-toolbar-tools Logisthink Operator
+            |
+            md-divider
+            |
+            div(layout="row",layout-align="space-between center")
+                |
+                md-subheader.online-panel(flex) Online Driver
+                md-select.md-no-underline(ng-model="filter",placeholder="Filter")
+                    |
+                    md-option(value="available") Available
+                    md-option(value="on-job") On Job
+            |
+            md-divider
+            |
+            md-list.online-list(flex,ng-controller="AppData")
+                |
+                md-subheader.md-no-sticky Driver list
+                |
+                md-list-item.md-2-line(ng-controller="AppData",ng-repeat="item in driver",ng-click="null")
+                    |
+                    img(ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}")
+                    div.md-list-item-text(layout="column")
+                        |
+                        strong {{ item.who }}
+                        small {{ item.what }}
+                    md-button.md-secondary.online(ng-click="null",aria-label="status")
+                        |
+                        small.driver-status online
+            |
+            md-divider
+            |
+            div(layout="row",layout-align="space-between center")
+                |
+                md-subheader.offline-panel(flex) Offline Driver
+                md-select.md-no-underline(ng-model="filter",placeholder="Filter")
+                    |
+                    md-option(value="available") Available
+                    md-option(value="on-job") On Job
+            |
+            md-divider
+            |
+            md-list.offline-list(flex,ng-controller="AppData")
+                |
+                md-subheader.md-no-sticky Driver list
+                |
+                md-list-item.md-2-line(ng-controller="AppData",ng-repeat="item in driver",ng-click="null")
+                    |
+                    img(ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}")
+                    div.md-list-item-text(layout="column")
+                        |
+                        strong {{ item.who }}
+                        small {{ item.what }}
+                    md-button.md-secondary.offline(ng-click="null",aria-label="status")
+                        |
+                        small.driver-status Offline
+                        |
+            |  
+        div(ng-controller="TrackOrder")
+          |
+          div.contentholder.md-padding(flex,layout-padding,layout="row",layout-xs="column",ng-cloak)
+            |
+            md-input-container.md-block
+              label Order ID
+              input(ng-model="orderid")
+            |
+            md-input-container.md-block
+              label User ID
+              input(ng-model="userid")
+            |
+            md-input-container.md-block
+              label latitude
+              input(ng-model="lat")
+            |
+            md-input-container.md-block
+              label longitude
+              input(ng-model="lng")
+            |
+            md-input-container.md-block
+              label Vehicle ID
+              input(ng-model="vehicleid")
+            |
+            md-input-container.md-block
+              label Provider
+              input(ng-model="provider")
+            |
+            div.button-area(layout="column")
+              md-button.md-raised(ng-click="newOrder()") Submit Order
+              md-button.md-raised(ng-click="updateOrder()") Update Order
+              md-button.md-raised(ng-click="locate()").
+                 #[md-icon.material-icons gps_fixed] Locate
+              md-button.md-raised(ng-click="clearData()").
+                #[md-icon.material-icons delete] Clear Data
+            |
+          div.socket.contentholder(layout="row",ng-init)
+            md-card(ng-repeat="order in orders",ng-click="cardClick(order)")
+              md-card-title
+                md-card-title-text
+                  span.md-headline Order ID : {{ order.order_id }}
+                  span.md-subhead User ID : {{ order.driver_id }}
+                  span.md-subhead Latitude : {{order.lat}}
+                  span.md-subhead Longitude : {{order.lng}}
+                  span.md-subhead Vehicle ID: {{order.vehicle_id}}
+                  span.md-subhead Provider ID: {{order.provider_id}}

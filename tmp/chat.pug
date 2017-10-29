@@ -1,0 +1,17 @@
+body(ng-controller="chatController" )
+  md-toolbar.md-hue-2.md-dark-grey-theme(md-theme="dark-grey")
+    div.md-toolbar-tools
+      md-button.md-icon-button(ng-click="closeChat()")
+        md-icon.material-icons arrow_back
+      md-subhead
+        h4 Operator
+  div.chatcontent.md-hue-2(md-theme="dark-blue")
+    md-list.md-hue-2.md-dark-grey-theme(md-theme="dark-grey")
+      md-list-item(class="{{chat.from == 'you' ? 'right-list chatbubble':'left-list chatbubble' }}" ng-repeat="chat in chats" md-theme="dark-grey")
+        p {{chat.message}}
+        small(style="font-size:10px;display:block;position:absolute;bottom:0px;") {{chat.timestamp}}
+
+  composer
+    input.msgbox(ng-keyup="$event.keyCode == 13 && sendMsg()" ng-model="msgbox" placeholder="Ketik disini...")
+    md-button.md-icon-button(ng-click="sendMsg()")
+      md-icon.material-icons send

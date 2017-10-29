@@ -1,0 +1,35 @@
+html
+  head
+    title="Login Driver - Logisthink"
+    link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel="stylesheet",href="/angular-material.min.css")
+    script(src="/socket.io/socket.io.js")
+    link(rel="manifest",href="/manifest.json")
+    meta(name="viewport",content="width=device-width,initial-scale=1.0")
+    meta(name="theme-color" content="#333")
+    link(rel="stylesheet",href="/style.css")
+    script(src="/angular.min.js")
+    script(src="/angular-animate.min.js")
+    script(src="/angular-aria.min.js")
+    script(src="/angular-material.min.js")
+    script(src="/jquery-3.1.1.min.js")
+    link(rel="icon",href="favicon.png")
+    script(src="/socket-client.js")
+    script(src="/md5.js")
+    script(src="/logindriver.js")
+  body(ng-app="Logisthink" md-theme="dark-grey" ng-controller="LoginController" md-theme-watch)
+    md-content.loginform(layout="row" flex layout-align="center center")
+      md-card(layout="column" layout-align="center")
+        md-card-title
+          md-card-title-text
+            h3  Driver Login
+        md-card-content(layout="column")
+          md-input-container
+            label No Hp
+            input(ng-model="phone" ng-keypress="checkEnter($event)")
+          md-input-container
+            label Password
+            input(ng-model="password" type="password" ng-keypress="checkEnter($event)")
+        md-card-actions(layout="row" layout-align="space-between stretch")
+          md-button.md-primary(ng-click="logging($event)") Login
+          md-button.md-warn(ng-click="forgot()") Forgot Password

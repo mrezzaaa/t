@@ -1,0 +1,30 @@
+{
+  "short_name": "Logisthink",
+  "name": "Operator Logisthink",
+  "icons": [
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "background_color": "white",
+  "display": "standalone",
+  "theme_color": "grey",
+  "start_url": "/"
+}

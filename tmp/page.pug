@@ -1,0 +1,129 @@
+html
+    head
+        title="Logisthink"
+        meta(http-equiv="Content-Security-Policy",content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'")
+        link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel="stylesheet",href="/angular-material.min.css")
+        script(src="/socket.io/socket.io.js")
+        link(rel="manifest",href="/manifest.json")
+        meta(name="viewport",content="width=device-width,initial-scale=1.0")
+        link(rel="stylesheet",href="/style.css")
+        script(src="/angular.min.js")
+        script(src="/angular-animate.min.js")
+        script(src="/angular-aria.min.js")
+        script(src="/angular-material.min.js")
+        script(src="/jquery-3.1.1.min.js")
+        script(src="/moment.js")
+        link(rel="icon",href="favicon.png")
+        script(defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5A4BPladAgNIz9PqSxXOgajmjsQx2JyE&libraries=places,geometry&callback=buildMap")
+        script(defer,src="/CustomMarker.js")
+        script(src="/markerclusterer.js")
+        script(src="/app.js")
+        
+
+    body(ng-app="Logisthink",ng-cloak)
+      md-content(ng-controller="MyController",layout-xs="column",layout="row",ng-init="socketing()")
+        md-toolbar.md-hue-1.md-whiteframe-2dp
+          div.md-toolbar-tools(flex)
+            md-icon
+              img.logo(ng-src="logo.png")
+            |
+            span(flex)
+            span(flex)
+            span(flex)
+            md-button(ng-click="jobsMenu()",arial-label="Jobs",md-truncate) Jobs
+            md-button(ng-click="driverMenu()",arial-label="Drivers",md-truncate) Drivers <small>{{totaldriver}}</small>
+            md-button(arial-label="Unassigned",md-truncate) Unassigned
+            md-button(arial-label="Progress",md-truncate) Progess
+            md-button(arial-label="Chat",md-truncate) Chat
+            span(flex)
+            span(flex)
+            md-button.md-icon-button.md-primary(arial-label="notification").
+              #[md-icons.material-icons notifications]
+            md-button.md-icon-button(arial-label="Setting").
+              #[md-icon.md-mini.material-icons settings]
+            md-list
+              md-list-item
+                img.md-avatar(ng-src="https://cdn3.iconfinder.com/data/icons/rcons-user-action/32/boy-512.png",arial-label="user profile picture")
+            md-select.md-no-underline(flex,ng-model="user",placeholder="Operator")
+              md-option(value="available").
+                #[md-icon.material-icons account_box] Account
+              md-option(value="on-job").
+                #[md-icon.material-icons exit_to_app] Log Out
+      md-sidenav.md-sidenav-left(flex-gt-sm="50" ,flex,layout="column",md-component-id="driver",md-disable-backdrop)
+        md-toolbar.md-accent(layout="row")
+          md-button.back.md-icon-button(ng-controller="MyController",ng-click="hideMenu('driver')")
+            md-icon.material-icons arrow_back 
+          h1.md-toolbar-tools Driver
+        md-list(flex)
+          md-list(flex)
+            md-input-container(layout="row")
+              label Search Driver
+              input(ng-model="searchdriver")
+              md-icon.material-icons search
+          md-divider
+          md-list(flex)
+            md-select.md-no-underline(ng-model="searchdriver",placeholder="Filter")
+              md-option(value="online") Online
+              md-option(value="offline") Offline
+              md-option(value="ontheway") Perjalanan
+          md-divider
+          md-list(flex)
+            md-list-item(ng-repeat="driver in drivers|filter:searchdriver",ng-click="null")
+              img.md-avatar(ng-src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS0hsXxVLV8xpeEAw0J5lxvoMDzSHiYQ3Y3S5RZDYco3r-dNCwpQQ")
+              div.md-list-item-text.md-3-line(flex)
+                label {{driver.name}}
+                br
+                small ID # {{driver.driver_id}}
+                br
+                md-chips
+                  md-chip(ng-class="{true:'online',false:'offline'}[driver.status=='online']") {{driver.status}}
+            md-divider
+      |
+      md-sidenav.md-sidenav-left(flex-order,layout-align="start stretch",layout="column",md-component-id="jobs",md-disable-backdrop)
+        md-toolbar.md-warn(flex-order,layout="row")
+          md-button.back.md-icon-button(ng-controller="MyController",ng-click="hideMenu('jobs')")
+            md-icon.material-icons arrow_back 
+          h1.md-toolbar-tools Jobs
+        md-divider
+        md-list(flex="nogrow",layout-padding,layout="column",set-class-when-at-top="fix-to-top")
+          md-input-container(flex)
+            label Cari Jobs
+            input(ng-model="searchjobs")
+            md-icon.material-icons search
+        md-divider
+        div(layout="column")
+          md-card(layout="column",ng-repeat="job in jobs|filter:searchjobs",ng-click="null")
+            md-card-title
+              md-card-title-text(style="margin:-10px auto;") ORDER ID {{job.order.id}}
+            md-divider
+            md-card-content
+              p Pickup : 
+                small(style="color:#cb7715;") {{ job.pickup[0].address.split(",")[ job.pickup[0].address.split(",").length - 4 ] }}
+              span(flex)
+              p Tujuan :
+                span(ng-repeat="addr in job.delivery") 
+                  small(flex,style="color:rgb(255,64,129);margin:5px auto;text-align:center;") {{$index + 1}}. {{addr.address.split(",")[2]}}
+              span(flex)
+              p Status: {{job.order.status}}
+            md-card-actions(layout="row",layout-align="end end")
+              md-button.md-accent {{ job.order.status == null ? "Assign" : "Track"}}
+      |
+      div.main-map#map
+      input#from.controls(placeholder="Dari")
+      input#destination.controls(placeholder="Tujuan")
+      input#address.controls(placeholder="Cari alamat")
+      a#locate(type="button",value="Locate").
+        #[i.material-icons gps_fixed]
+      a#moving.
+        #[i.material-icons local_shipping]
+      a#clear.
+        #[i.material-icons refresh]
+      .controls
+      md-switch#traffic(aria-label="Traffic") Traffic
+      span#legends
+        div.pulse Status:Online
+        div.pulseoffline Status:Offline
+      md-divider
+      |     
+      |

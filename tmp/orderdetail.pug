@@ -1,0 +1,58 @@
+html
+		head
+				title="Logisthink"
+				link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+				link(rel="stylesheet",href="/angular-material.min.css")
+				meta(name="viewport",content="width=device-width,initial-scale=0.5")
+				link(rel="stylesheet",href="/style.css")
+				script(src="/angular.min.js")
+				script(src="/angular-animate.min.js")
+				script(src="/angular-aria.min.js")
+				script(src="/angular-material.min.js")
+				script(src="/jquery-3.1.1.min.js")
+				link(rel="icon",href="favicon.png")
+				script(src="/app.js")
+				
+
+		body.dialog-demo-content(layout="row" flex="80" ng-controller="dialogController")
+			md-toolbar.md-accent(layout-wrap,layout-align="center stretch")
+				div.md-toolbar-tools
+					md-button.md-icon-button(aria-label="Cancel",ng-click="closeDialog($mdDialog)").
+						#[md-icon.material-icons arrow_back]
+					label Detail {{"#"+odetail.order.id}}
+					|
+			|
+			md-dialog-content(md-theme="dark-purple" flex-order layout-xs="column",layout="column" layout-padding layout-align="start")
+				md-subhead Order ID : {{odetail.order.id}} - {{odetail.order.status}}
+				div(layout="row" flex-order layout-padding layout-margin layout-align="start stretch" style="overflow-y:auto;")
+					md-subhead Informasi pengambilan barang
+					md-divider
+					md-list(layout="row" layout-fill)
+						md-list-item(ng-repeat="pickup in odetail.pickup"  layout="column" layout-align="start stretch")
+							small Lokasi : {{pickup.address}} <br/>
+							small Nama Tempat : {{pickup.place_name}} <br/>
+							small PIC : {{pickup.name}} <br/>
+							small Kontak PIC : <a href="tel:{{pickup.contact}}">{{pickup.contact}}</a> <br/>
+							small Waktu diterima job oleh supir : {{pickup.verification_accept_job_time}} <br/>
+							small Waktu pickup (jadwal) : {{pickup.early_time}} sampai {{pickup.latest_hour}} <br/>
+							small Waktu pickup (aktual) : {{pickup.verification_pickup_time}}<br/>
+							small Kendaraan : {{pickup.vehicle_type}} - {{pickup.vehicle_id}} <br/>
+				md-divider
+				div(layout="row" flex-order layout-padding layout-margin layout-align="start stretch" style="overflow-y:auto;")
+					md-subhead Informasi pengiriman barang
+					md-divider
+					md-list(layout="column" layout-fill)
+						md-list-item(ng-repeat="d in odetail.delivery" layout="column" layout-align="space-between stretch")
+							small Lokasi : {{d.address}} <br/>
+							small Nama tempat : {{d.place_name}} <br/>
+							small Penerima (berdasarkan jadwal) : {{d.name}} <br/>
+							small Kontak penerima : <a href="tel:{{d.contact}}">{{d.contact}}</a><br/>
+							small Status : {{d.status}} <br/>
+							small Kendaraan : {{d.vehicle_type}} - {{d.vehicle_id}}
+							small(ng-if="d.status == 'completed'") Penerima (aktual): {{d.pod_by}} <br/>
+							small(ng-if="d.status == 'completed'") Tanda terima : <br/><img height="100px" width="100px" style="backround:white;" src="{{'data:image/png;base64,'+d.pod_image}}"/>
+							small(ng-if="d.status == 'completed'") Waktu terima : {{d.verification_delivered_time}}
+						
+			md-dialog-actions(layout="column")
+				md-button.md-danger(ng-click="closeDialog($mdDialog)") Close
+				

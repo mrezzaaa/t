@@ -1,0 +1,24 @@
+{
+  "name": "Logisthink",
+  "version": "0.8.1",
+  "description": "Realtime logistic tracking",
+  "dependencies": {
+    "angular": "latest",
+    "async": "latest",
+    "express": "^5.0.0-alpha.2",
+    "fcm": "latest",
+    "fcm-node": "latest",
+    "fs": "latest",
+    "googleapis": "^20.1.0",
+    "helmet": "latest",
+    "https": "latest",
+    "mysql": "latest",
+    "nexmo": "^2.0.2",
+    "p3p": "0.0.2",
+    "pug": "latest",
+    "rethinkdb": "latest",
+    "rethinkdbdash": "latest",
+    "socket.io": "latest"
+  },
+  "author": "Insthink Digital"
+}

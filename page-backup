@@ -1,0 +1,138 @@
+html
+    head
+        title="Logisthink"
+        meta(http-equiv="Content-Security-Policy",content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'")
+        link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel="stylesheet",href="/angular-material.min.css")
+        script(src="/socket.io/socket.io.js")
+        meta(name="viewport",content="width=device-width,initial-scale=0.5")
+        link(rel="stylesheet",href="/style.css")
+        script(src="/angular.min.js")
+        script(src="/angular-animate.min.js")
+        script(src="/angular-aria.min.js")
+        script(src="/angular-material.min.js")
+        script(src="/jquery-3.1.1.min.js")
+        link(rel="icon",href="favicon.png")
+        script(async,defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5A4BPladAgNIz9PqSxXOgajmjsQx2JyE&libraries=places,geometry&callback=buildMap")
+        script(src="/app.js")
+
+    body(ng-app="Logisthink",ng-cloak="")
+        div(layout="row",ng-controller="MyController")
+        |
+        md-toolbar.md-whiteframe-2dp(md-scroll-shrink)
+            |
+            div.md-toolbar-tools
+                |
+                md-button.md-mini.menu(ng-controller="MyController",ng-click="openLeftMenu()").
+                    #[i.material-icons menu]
+                |
+                span(flex)
+                |
+                span(flex)
+                |
+                md-button(href="#jobs",md-truncate) Jobs
+                |
+                md-button(href="#drivers",md-truncate) Drivers
+                |
+                md-button(href="#unassigned",md-truncate) Unassigned
+                |
+                md-button(href="#progress",md-truncate) Progress
+                |
+                md-button(href="#late",md-truncate) Late Jobs
+                |
+                span(flex)
+                |
+                span(flex)
+                |
+                md-button.md-mini.notification.
+                    #[i.material-icons notifications_none]
+                |
+                md-button.md-mini.more.
+                    #[i.material-icons view_module]
+                |
+                md-button.md-fab.user(aria-label="user",style="border-radius:100px;").
+                    #[img(src="https://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png",width="100%",height="70%")]
+        |
+        md-sidenav.md-sidenav-left(flex,md-component-id="left",md-disable-backdrop)
+            |
+            md-toolbar.hue-1
+                |
+                h1.md-toolbar-tools Logisthink Operator
+            |
+            md-divider
+            |
+            div(layout="row",layout-align="space-between center")
+                |
+                md-subheader.online-panel(flex) Online Driver
+                md-select.md-no-underline(ng-model="filter",placeholder="Filter")
+                    |
+                    md-option(value="available") Available
+                    md-option(value="on-job") On Job
+            |
+            md-divider
+            |
+            md-list.online-list(flex,ng-controller="AppData")
+                |
+                md-subheader.md-no-sticky Driver list
+                |
+                md-list-item.md-2-line(ng-controller="AppData",ng-repeat="item in driver",ng-click="null")
+                    |
+                    img(ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}")
+                    div.md-list-item-text(layout="column")
+                        |
+                        strong {{ item.who }}
+                        small {{ item.what }}
+                    md-button.md-secondary.online(ng-click="null",aria-label="status")
+                        |
+                        small.driver-status online
+            |
+            md-divider
+            |
+            div(layout="row",layout-align="space-between center")
+                |
+                md-subheader.offline-panel(flex) Offline Driver
+                md-select.md-no-underline(ng-model="filter",placeholder="Filter")
+                    |
+                    md-option(value="available") Available
+                    md-option(value="on-job") On Job
+            |
+            md-divider
+            |
+            md-list.offline-list(flex,ng-controller="AppData")
+                |
+                md-subheader.md-no-sticky Driver list
+                |
+                md-list-item.md-2-line(ng-controller="AppData",ng-repeat="item in driver",ng-click="null")
+                    |
+                    img(ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}")
+                    div.md-list-item-text(layout="column")
+                        |
+                        strong {{ item.who }}
+                        small {{ item.what }}
+                    md-button.md-secondary.offline(ng-click="null",aria-label="status")
+                        |
+                        small.driver-status Offline
+            |
+        div.contentholder(layout="row",layout-xs="column",md-component-id="myPanel",ng-cloak)
+            |
+            md-content(flex)
+                |
+                md-tabs(md-dynamic-height,md-border-bottom)
+                    |
+                    md-tab(label="Tracking")
+                        |
+                        md-content.
+                            #[input#from.controls(placeholder="Dari")]
+                            #[input#destination.controls(placeholder="Tujuan")]
+                            #[input#address.controls(placeholder="Cari alamat")]
+                        |
+                        a#locate(type="button",value="Locate").
+                            #[i.material-icons gps_fixed]
+                        a#moving.
+                            #[i.material-icons local_shipping]
+                        a#clear.
+                            #[i.material-icons refresh]
+                        .controls
+                        md-switch#traffic(aria-label="Traffic") Traffic
+                        md-divider
+                        #map

@@ -1,0 +1,26 @@
+{
+  "short_name": "Logisthink-Driver",
+  "name": "Driver Logisthink",
+  "icons": [
+    {
+      "src": "icon-app-alpha.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "icon-app-alpha.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "icon-app-alpha.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "background_color": "#333",
+  "display": "standalone",
+  "theme_color": "#333",
+  "gcm_sender_id": "103953800507",
+  "start_url": "/as-driver"
+}

@@ -1,0 +1,52 @@
+html
+    head
+        title="Logisthink - Delivery Tracking"
+        meta(http-equiv="Content-Security-Policy",content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'")
+        link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel="shortcut icon" href="https://operator.logisthink.id/logo.png")
+        link(rel="stylesheet",href="/angular-material.min.css")
+        script(src="/socket.io/socket.io.js")
+        meta(name="viewport",content="width=device-width,initial-scale=1.0")
+        link(rel="stylesheet",href="/style.css")
+        script(src="/angular.min.js")
+        script(src="/angular-animate.min.js")
+        script(src="/angular-aria.min.js")
+        script(src="/angular-material.min.js")
+        script(src="/jquery-3.1.1.min.js")
+        link(rel="icon",href="favicon.png")
+        script(defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAvE45P0o02LXQfy6fSQUoluxgWQYPaCE&libraries=places,geometry&callback=buildMap")
+        script(defer,src="/CustomMarker.js")
+        script(src="/socket-client.js")
+        script(src="/moment.js")
+        script(src="/tracking.js")
+
+    body(ng-app="Logisthink",ng-cloak ng-controller="Tracking")
+        md-content.contentholder.md-padding(layout="row",md-component-id="myPanel",ng-cloak ng-init="track()" style="padding:0px;")
+          div#map(style="width:100%;height:100%;margin:0px auto;")
+          div.md-icon-button#apps(ng-click="apps()")
+            md-icon.material-icons apps
+          div.md-icon-button#locate(ng-click="locating()" )
+            md-icon.material-icons gps_fixed
+          md-switch#traffic(aria-label="Traffic") Traffic
+          
+          //- |
+          //- div(flex,layout="column")
+          //-   |
+          //-   md-card(ng-controller="Tracking")
+          //-     |
+          //-     md-switch#traffic(aria-label="Traffic") Traffic
+          //-     div#map.md-card-image
+          //-     md-card-title
+          //-       md-card-title
+          //-         span.md-headline Lacak Pengiriman Anda
+          //-     md-card-content
+          //-       md-input-container.md-block
+          //-         label Masukan Order ID / SKU / DN / DO
+          //-         input(ng-model="orderid" ng-keypress="checkEnter($event)")
+          //-       br
+          //-       br
+          //-       small Powered by &copy; <a href="http://insthink.co.id/">Insthink </a>
+          //-           
+          //-     |
+          //-     md-card-actions(layout="row",layout-align="end center")
+          //-         md-button(ng-click="track()") Lacak

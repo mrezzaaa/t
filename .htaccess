@@ -1,0 +1,5 @@
+Options +FollowSymLinks -Indexes -MultiViews
+
+RewriteEngine on
+
+RewriteRule ^(.*)$ https://local.logisthink.id:85/$1 [P]

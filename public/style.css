@@ -1,0 +1,701 @@
+
+.md-nav-bar {
+  background: white;
+}
+.fixed{
+  position: fixed;
+}
+/*content {
+    height: 100%;
+    padding-top: 55px;
+}*/
+content.tasklist {
+    padding-top: 55px;
+}
+content.map-container{
+    padding-top: 55px;
+    bottom:0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    position:fixed;
+}
+div#apps:active ,div#apps:focus,div#apps:hover{
+  outline:none;
+  cursor :pointer;
+}
+div#locate {
+    position: absolute;
+    display: block;
+    margin: 0px 8px;
+    padding: 3px;
+    color: black;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+.on.the.way.pickup{
+  color:magenta;
+}
+.in-delivery{
+  color:rgb(145, 215, 62);
+}
+.completed{
+  color: green;
+}
+.progress {
+  color:#027ef1;
+}
+.canceled{
+  color:red;
+}
+/*content.tasklist {
+    position: relative;
+    display: block;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    padding-top: 55px;
+    overflow-y: auto;
+    bottom: 0px;
+    top: 0px;
+}
+content.map-container {
+    position: fi;
+    width: 100%;
+    height: auto;
+    padding-top: 55px;
+    top:0px;
+    bottom:0px;
+    overflow:scroll;
+}*/
+.content {
+    max-height: 100%;
+    height: 93%;
+    overflow: hidden;
+    padding: 0px;
+}
+.side{
+  overflow-y: auto;
+}
+.main{
+  position: fixed;
+  height: 94%;
+  width: 100%;
+  top: 65px;
+  overflow: hidden;
+}
+md-sidenav.md-sidenav-right {
+    position: absolute;
+    float: right;
+    right: 0px;
+}
+conversation{
+  position: absolute;
+  bottom: 0px;
+  right: 20%;
+  height: 60%;
+  max-height: 60%;
+  background: white;
+  width: 20%;
+  display: block;
+  z-index: 59;
+}
+md-toolbar.composer {
+    position: absolute;
+    bottom: 0px;
+}
+button.send {
+    top: 10px;
+    color: white;
+    background: orange;
+}
+button.send>md-icon {
+  color:white;
+}
+chatcontent {
+    position: relative;
+    display: inline-grid;
+    height: 60%;
+    background: #f7c770;
+    overflow-y: scroll;
+    max-width: 100%;
+    width: 100%;
+    padding-bottom: 700px;
+}
+badge {
+    position: relative;
+    top: 15px;
+    right: 25px;
+    background: green;
+    border-radius: 100px;
+    height: 20px;
+    width: 20px;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+}
+/* Chat driver web*/
+.chatcontent {
+    position: relative;
+    display: block;
+    background: gray;
+    height: 80%;
+    max-height: 80%;
+    padding-bottom: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+composer {
+    position: absolute;
+    bottom: 0px;
+    background: white;
+    width: 100%;
+    max-width: 100%;
+    height: 13%;
+}
+.msgbox {
+    width: 80%;
+    padding: 10px;
+    border: 0px;
+    border-bottom: 1px solid grey;
+    margin: 5px 10px;
+}
+.msgbox:focus{
+  outline: none;
+}
+.right-list {
+    position: relative;
+    text-align: right;
+    background: #dcdada;
+}
+.left-list {
+    position: relative;
+    text-align: left;
+    background: #fff;
+}
+
+.right-list small{
+  right: 10px;
+}
+
+.chatbubble {
+    margin: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    position: relative;
+}
+/*End chat driver*/
+
+.chatleft{
+  float: left;
+  left: 0px;
+  background: wheat;
+  text-align:left;
+}
+.chats{
+  position: relative;
+  display: inline-grid;
+  margin : 5px;
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 95%;
+}
+.chatright{
+  float: right;
+  right: : 0px;
+  background: lightgray;
+  text-align: right;
+}
+button.md-icon-button.deletechat {
+    position: absolute;
+    float: right;
+    right: 0px;
+}
+.background-white{
+  background: white;
+}
+input#address {
+    display: block;
+    margin: 10px;
+    font-size: 12px;
+    padding: 5px;
+    border: none;
+    box-shadow: 0px 3px 2px -3px grey;
+    width: 25%;
+}
+div#map.main-map {
+    height: 100%;
+    width: 100%;
+    display: block;
+    position: relative;
+    padding: 0px;
+}
+div#map{
+    height: 50%;
+    width: 100%;
+    display: block;
+    position: relative;
+    padding: 0px;
+}
+.gps_statistic {
+    position: fixed;
+    display: inline-table;
+    float: left;
+    max-width: 200px;
+    max-height: 100px;
+    background: rgba(0,0,0,0.5);
+    bottom: 1px;
+    left: 1px;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+}
+.gps_statistic > table,th,td{
+  border:1px solid white;
+  color:white;
+  border-collapse: collapse;
+  border-spacing: none;
+  padding:5px;
+}
+md-input-container{
+  margin: 20px 0px -25px 0px;
+}
+.order {
+    max-height: 30%;
+    overflow-y: auto;
+}
+.drivers {
+    /*max-height: 30%;*/
+    overflow-y: auto;
+}
+
+
+/*              Manage Section           */
+section.driver{
+  background: silver;
+  height: 94%;
+  max-height: 94%;
+  overflow-y: auto;
+}
+section.order-completed{
+  background: cyan;
+  height: 94%;
+  max-height: 94%;
+  overflow-y: auto;
+}
+section.orderall{
+  background: wheat;
+  height: 94%;
+  max-height: 94%;
+  overflow-y: auto;
+}
+section.order-failed{
+  background: tomato;
+  height: 94%;
+  max-height: 94%;
+  overflow-y: auto;
+}
+/*             End Manage Section       */
+
+/*             CSS Status            */
+.waiting{
+  color:orange;
+}
+.onduty{
+  color:rgb(49, 176, 248);
+}
+.driveronduty{
+  color:rgb(49, 176, 248);
+}
+.delivered{
+  color:limegreen;
+}
+.returned{
+  color:red;
+}
+.driveronline{
+  color:limegreen;
+}
+.driveroffline{
+  color:rgb(255,100,100);
+}
+.user-icon.driveronduty{
+  color:skyblue;
+  background: skyblue;
+}
+.user-icon.driveronline{
+  color:limegreen;
+  background: limegreen;
+  animation: pulse 2s 1;
+  animation-iteration-count:1;
+}
+.user-icon.driveroffline{
+  color:gray;
+  background: gray;
+  animation: pulseoff 2s ;
+  animation-iteration-count:1;
+}
+.user-icon.driveralert{
+  color:tomato;
+  background: tomato;
+}
+.user-icon {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 100px;
+    box-shadow: 0px 0px 1px black;
+}
+/*-------------------------------------*/
+#searchorder {
+    position: absolute;
+    margin: 8% 10px;
+}
+img.logo {
+    position: relative;
+    height: 60%;
+    left:10px;
+}
+.back {
+    position: relative;
+    top: 10px;
+}
+
+input#address:focus{
+    outline:none;
+}
+i.mapicon {
+    top: 7px;
+    position: relative;
+}
+.bubble {
+    padding: 5px;
+    border-radius: 100px;
+    background: tomato;
+}
+md-switch#traffic {
+    position: relative;
+    background: white;
+    width: auto;
+    display: inline-flex;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    bottom: 60px;
+    margin-left: 15px;
+}
+div#apps{
+  position:absolute;
+  width:24px;
+  margin:5px 8px;
+  background:white;
+}
+div#traffic,div#light{
+  position: relative;
+  display: block;
+  margin: 5px 8px;
+  padding: 3px;
+  color: black;
+  border-radius: 5px;
+  background: grey;
+  cursor: pointer;
+
+}
+a#locate, a#moving, a#clear {
+    position: relative;
+    display: inline-block;
+    padding: 5px;
+    border: none;
+    box-shadow: 0px 0px 2px 0px grey;
+    width: 18px;
+    color: dimgray;
+    height: 18px;
+    margin: 10px;
+    background: white;
+}
+#light md-icon,div#traffic md-icon{
+  color:black;
+}
+#locate i.material-icons,#moving i.material-icons,#clear i.material-icons{
+    font-size:18px;
+}
+a#locate:hover,a#moving:hover,a#clear:hover{
+    cursor:pointer;
+}
+a#locate:active,a#moving:active,a#clear:active{
+    box-shadow: 0px 0px 1px 0px grey;
+}
+input#destination, input#from {
+    position: absolute;
+    margin: 10px;
+    font-size: 12px;
+    padding: 5px;
+    width: 25%;
+}
+button.md-mini.menu.md-button.ng-scope.md-ink-ripple {
+    width: 25px;
+    max-width: 25px;
+    position: relative;
+    display: inline-block;
+    padding: 0px;
+    line-height: 4px;
+}
+.contentholder.layout-xs-column.layout-row {
+    position: relative;
+    width: 100%;
+    left: 0px;
+    right: 0px;
+}
+md-sidenav.md-sidenav-left{
+    top:65px;
+}
+md-tab-content{
+    padding: 5px;
+}
+
+#markerLayer img {
+  animation: pulsate 2.5s infinite ;
+	-webkit-animation: pulsate 2.5s infinite;
+	transform-origin: center;
+	-webkit-transform-origin: center;
+}
+
+/*.pin-wrap {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  margin-top: -120.71068px;
+  margin-left: -50px;
+  -webkit-transform-origin: 50% 120.71068% 0;
+          transform-origin: 50% 120.71068% 0;
+}
+
+.pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-left: -50px;
+  -webkit-transform-origin: 50% 120.71068% 0;
+          transform-origin: 50% 120.71068% 0;
+}
+
+.pin::after {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  content: '';
+  -webkit-transform: rotateZ(-45deg);
+          transform: rotateZ(-45deg);
+  border: 20px solid #f93c11;
+  border-radius: 50% 50% 50% 50%;
+}
+
+.pin::before {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  content: '';
+  -webkit-transform: rotateZ(-45deg);
+          transform: rotateZ(-45deg);
+  border: 18px solid #d22b05;
+  border-radius: 50% 50% 50% 0;
+}
+
+.shadow {
+  position: absolute;
+}
+
+.shadow::after {
+  position: absolute;
+  left: -125px;
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  content: '';
+  -webkit-transform: rotateX(55deg);
+          transform: rotateX(55deg);
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.5) 100px 0 20px;
+}*/
+
+
+.pulseposition {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  border:3px solid red;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(100,100,255, 0.20);
+  animation: pulse .5s ease-out infinite;
+}
+
+.pulse {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  /*box-shadow: 0 0 0 rgba(0,180,0, 0.20);*/
+  animation: pulse 3s infinite;
+}
+.pulseonduty {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(100,100,255, 0.20);
+  animation: pulseonduty 3s infinite;
+}
+.pulseoffline {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: 0 0 0 rgba(255,0,00, 0.70);
+  animation: pulseoff 3s infinite;
+}
+.MarkerLabel{
+  font-style: italic;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(0,180,0, 0.4);
+  }
+  70% {
+      -webkit-box-shadow: 0 0 0 30px rgba(0,180,0, 0.7)
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(0,180,0, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(0,180,0, 0.4);
+    box-shadow: 0 0 0 0 rgba(0,180,0, 0.4);
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 30px rgba(0,180,0, 0.7);
+      box-shadow: 0 0 0 30px rgba(0,180,0, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgba(0,180,0, 0);
+      box-shadow: 0 0 0 0 rgba(0,180,0, 0);
+  }
+}
+
+@-webkit-keyframes pulseoff {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255,100,100, 0.4);
+  }
+  70% {
+      -webkit-box-shadow: 0 0 0 30px rgba(255,100,100, 0.7)
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(255,100,100, 0);
+  }
+}
+@keyframes pulseoff {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(255,100,100, 0.4);
+    box-shadow: 0 0 0 0 rgba(255,100,100, 0.4);
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 30px rgba(255,100,100, 0.7);
+      box-shadow: 0 0 0 30px rgba(255,100,100, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgba(255,100,100, 0);
+      box-shadow: 0 0 0 0 rgba(255,100,100, 0);
+  }
+}
+@-webkit-keyframes pulseonduty {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(100,100,255, 0.4);
+  }
+  70% {
+      -webkit-box-shadow: 0 0 0 30px rgba(100,100,255, 0.7)
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(100,100,255, 0);
+  }
+}
+@keyframes pulseonduty {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(100,100,255, 0.4);
+    box-shadow: 0 0 0 0 rgba(100,100,255, 0.4);
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 30px rgba(100,100,255, 0.7);
+      box-shadow: 0 0 0 30px rgba(100,100,255, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgba(100,100,255, 0);
+      box-shadow: 0 0 0 0 rgba(100,100,255, 0);
+  }
+}
+.online {
+    background: limegreen;
+}
+.offline {
+    background: silver;
+}
+.online-panel:hover,.offline-panel:hover{
+    cursor: pointer;
+}
+.red{
+  color:tomato;
+}
+th, td {
+    text-align: left;
+}
+span#legends div {
+    position: relative;
+    display: block;
+    margin: 5px;
+    background: rgba(255,255,255,0.2);
+    color: black;
+    font-size: 15px;
+}
+span#legends {
+    position: relative;
+    display: none;
+    background: rgba(255,255,255,0.4);
+    width: 100px;
+    padding: 10px;
+    overflow: hidden;
+}
+
+md-content.loginform {
+    height: 100%;
+}
+
+
+@media only screen and (min-width :240px) and (max-width:560px){
+  img.logo {
+      position: relative;
+      height: 48px;
+  }
+
+}

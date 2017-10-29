@@ -1,0 +1,108 @@
+html
+  head
+    title="Logisthink"
+    meta(http-equiv="Content-Security-Policy",content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'")
+    link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel="stylesheet",href="/angular-material.min.css")
+    script(src="/socket.io/socket.io.js")
+    link(rel="manifest",href="/manifest.json")
+    meta(name="viewport",content="width=device-width,initial-scale=1.0")
+    link(rel="stylesheet",href="/style.css")
+    script(src="/angular.min.js")
+    script(src="/angular-animate.min.js")
+    script(src="/angular-aria.min.js")
+    script(src="/angular-material.min.js")
+    script(src="/jquery-3.1.1.min.js")
+    link(rel="icon",href="favicon.png")
+    script(defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5A4BPladAgNIz9PqSxXOgajmjsQx2JyE&libraries=places,geometry&callback=buildMap")
+    script(defer,src="/CustomMarker.js")
+    script(src="/markerclusterer.js")
+    script(src="/socket-client.js")
+    script(src="/app.js")
+body(ng-app="Logisthink",ng-cloak)
+  md-sidenav.md-sidenav-right(md-is-locked-open="$mdMedia('gt-md')" md-component-id="right")
+    md-toolbar(md-theme="dark-blue")
+      h1.md-toolbar-tools Chat
+      md-content(ng-controller="AppData" layout="row" flex)
+  content(layout="column",flex,ng-init="socketing()",ng-controller="MyController")
+    md-toolbar.background-white(md-scroll-shrink ng-if="true")
+      div.md-toolbar-tools.md-whiteframe-2dp.background-white(layout-align="stretch")
+        img.logo(ng-src="logo.png")
+        md-nav-bar(flex layout="row" layout-align="center center" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links")
+          md-nav-item(md-nav-click="goto('page1')" name="operator") Operator
+            md-tooltip(md-direction="bottom") Halaman sekarang yg sedang aktif
+          md-nav-item(md-nav-click="goto('page2')" name="manage") Manage
+            md-tooltip(md-direction="bottom") Tidak tersedia untuk demo
+        md-button.md-icon-button.md-warn
+          md-tooltip(md-direction="bottom") Fitur Chat masih dalam bentuk Beta
+          md-icon.material-icons chat
+        md-button.md-icon-button.md-accent
+          md-tooltip(md-direction="bottom") Tidak tersedia untuk demo
+          md-icon.material-icons notifications
+        md-button.md-icon-button.md-warn(ng-click="toggleFullScreen()")
+          md-tooltip(md-direction="bottom") Fullscreen
+          md-icon.material-icons zoom_out_map
+        md-button.md-icon-button.md-warn(ng-click="logout()")
+          md-tooltip(md-direction="bottom") Logout/Keluar
+          md-icon.material-icons exit_to_app
+    div.content(layout="row" layout-align="start stretch" layout-sm="column") 
+      md-sidenav.md-sidenav-left(md-is-locked-open="$mdMedia('gt-md')" flex-gt-sm="20" layout-padding layout="column")
+        md-input-container
+          label Cari...
+          input(ng-model="searchbox")
+          md-icon.material-icons search
+        md-divider
+        md-subhead 
+          md-icon.material-icons assignment
+          span  Pengiriman
+          br
+          small {{jobs.length}} Total Pengiriman
+
+        md-divider
+        div.order
+          md-list(flex)
+            md-list-item.md-3-line.md-dense(ng-repeat="job in jobs | filter:searchbox | orderBy:'-created_date'" ng-click="assignTo(job,$event)" )
+              div.md-list-item-text(layout="column")
+                label ID:{{"#"+job.order.id}}
+                small(style="font-size:10px;") {{job.pickup[0].address.split(",")[ job.pickup[0].address.split(",").length - 4 ]}} - 
+                  small(style="font-size:10px;" ng-repeat="addr in job.delivery") {{addr.address.split(",")[addr.address.split(",").length - 4 ]}} {{$index != job.delivery.length - 1 ? " , ":""}}
+                small Status : <i class="{{job.order.status}}">{{job.order.status}}</i>
+        md-divider
+        md-subhead
+          md-icon.material-icons airline_seat_recline_extra
+          span Supir
+        md-divider
+        div.drivers(flex md-no-margin )
+          md-list(flex)
+            md-list-item.md-3-line.md-dense(layout-align="start" ng-repeat="driver in drivers |filter:searchbox |orderBy:['-timestamp','-status']" ng-click="goToDriver(driver)")
+              div(class="{{'user-icon driver'+driver.status}}" flex="20" layout="row")
+              div.md-list-item-text(flex="80")
+                div(flex layout="column")
+                  b {{driver.name}}
+                div(flex layout="column")
+                  small <p class="{{'driver'+driver.status}}">{{driver.status}} , {{driver.vehicle_id}}</p> 
+        
+      div.main(flex-gt-sm="auto"  flex="auto" layout-padding)
+        div.main-map#map
+        md-card#searchorder
+          md-card-content
+            md-input-container
+              label Cari Order ID
+              input(ng-model="searchbox")
+          md-card-actions(layout="row" layout-align="center")
+            md-button.md-warn Cari
+        //- input#from.controls(placeholder="Dari")
+        //- input#destination.controls(placeholder="Tujuan")
+        //- input#address.controls(placeholder="Cari alamat")
+        a#locate(type="button",value="Locate").
+          #[i.material-icons gps_fixed]
+        a#moving.
+          #[i.material-icons local_shipping]
+        a#clear.
+          #[i.material-icons refresh]
+        .controls
+        md-switch#traffic(aria-label="Traffic") Traffic
+        span#legends
+          div.pulse Status:Online
+          div.pulseoffline Status:Offline
+ 

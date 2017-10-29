@@ -1,0 +1,35 @@
+html
+    head
+        title="Logisthink"
+        link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+        link(rel="stylesheet",href="/angular-material.min.css")
+        meta(name="viewport",content="width=device-width,initial-scale=0.5")
+        link(rel="stylesheet",href="/style.css")
+        script(src="/angular.min.js")
+        script(src="/angular-animate.min.js")
+        script(src="/angular-aria.min.js")
+        script(src="/angular-material.min.js")
+        script(src="/jquery-3.1.1.min.js")
+        link(rel="icon",href="favicon.png")
+
+
+        body.dialog-demo-content(layout="row",layout-wrap,layout-margin,layout-align="center",ng-cloak,ng-controller="dialogController" )
+          md-toolbar.md-accent(layout-wrap,layout-align="center stretch")
+            div.md-toolbar-tools
+              md-button.md-icon-button(aria-label="Cancel",ng-click="closeDialog()").
+                #[md-icon.material-icons arrow_back]
+              label Update mobil untuk supir
+              |
+          |    
+          md-dialog-content(ng-init="loadVehicle()" layout-xs="column",layout="column",layout-wrap,layout-padding,layout-align="start")
+            h3 Pilih mobil untuk {{driverupdate.name}}
+            md-input-container
+              label Pilih mobil untuk {{driverupdate.name}}
+              md-select.md-no-underline(ng-model="selectedVehicle" placeholder="Pilih")
+                md-option(value="0_Mobil belum di assign") Kosongkan mobil
+                md-option(ng-repeat="vehicle in vehicles" value="{{vehicle.id}}_{{vehicle.licenseplate}}") {{vehicle.type}} <--> {{vehicle.licenseplate}}
+            span(flex)
+          md-dialog-actions(layout="row")
+            md-button.md-accent(ng-click="assignVehicle()") Save
+            span(flex)
+            md-button.md-primary(ng-click="closeDialog()") Cancel

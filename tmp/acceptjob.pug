@@ -1,0 +1,25 @@
+md-bottom-sheet.md-list(style="max-height:70%;overflow-y:auto;"  layout-align="start" md-theme-watch)
+  md-subheader(ng-cloak) Job Detail
+  md-list(md-theme-watch ng-cloak layout="row" flex-order layout-align="start stretch" layout-padding)
+    md-list-item(flex style="max-height:100%;height:100%;overflow-y:auto;" layout="column" layout-align="start start")
+      small(flex) ORDER ID: {{'#'+job.order_id}}
+      small(flex) Pickup : {{job.pickup_address.split(",")[1]}}
+        md-button.md-mini.md-fab(ng-click="viewOnMap(job.pickup_lat,job.pickup_lng,job,'pickup')")
+          md-icon.material-icons navigation
+      small(flex) Waktu loading barang : <b>{{job.pickup_date}}</b>
+      small(flex) Batas loading barang : <b>{{job.pickup_late}}</b>
+  md-divider
+  md-list(md-theme-watch ng-cloak layout="row" flex-order layout-align="start" layout-padding)
+    md-list-item(flex style="max-height:100%;height:100%;overflow-y:auto;" layout="column" layout-align="start")
+      small(flex) SKU/DN/DO :{{job.delivery_sku}} <br/>
+      small(flex) Tujuan: {{job.delivery_address.split(",")[1]}}
+      small(flex) Alamat: {{job.delivery_address}}
+        md-button.md-mini.md-fab(ng-click="viewOnMap(job.delivery_lat,job.delivery_lng,job,'delivery')")
+          md-icon.material-icons navigation
+  md-list.md-hue-2(md-theme-watch md-theme="dark-grey" ng-cloak layout="row" flex layout-align="start" layout-padding)
+    div(flex="100" layout="row" layout-align="space-around stretch")
+      md-button.md-primary(ng-if="job.delivery_status=='scheduled'" md-theme="dark-blue" layout="column" ng-click="acceptJob(job)") Pickup Sekarang
+      md-button.md-primary(ng-if="job.delivery_status=='on the way pickup'" md-theme="dark-blue" layout="column" ng-click="acceptDelivery(job)") Antar
+      md-button.md-primary(ng-if="job.delivery_status=='in-delivery'" md-theme="dark-blue" layout="column" ng-click="completeDelivery(job)") Selesai 
+      md-button.md-primary(ng-if="job.delivery_status=='in-delivery'" md-theme="default" layout="column" ng-click="retur(job)") Gagal 
+      md-button.md-warn(layout="column" ng-click="dismiss()") Close

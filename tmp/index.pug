@@ -1,0 +1,233 @@
+html
+  head
+    title="Logisthink"
+    meta(http-equiv="Content-Security-Policy",content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'")
+    link(rel="stylesheet",href="https://fonts.googleapis.com/icon?family=Material+Icons")
+    link(rel="stylesheet",href="/angular-material.min.css")
+    link(rel="shortcut icon" href="https://operator.logisthink.id/logo.png")
+    script(src="/socket.io/socket.io.js")
+    link(rel="manifest",href="/manifest.json")
+    meta(name="viewport",content="width=device-width,initial-scale=1.0")
+    link(rel="stylesheet",href="/style.css")
+    script(src="/angular.min.js")
+    script(src="/angular-animate.min.js")
+    script(src="/angular-aria.min.js")
+    script(src="/angular-material.min.js")
+    script(src="/jquery-3.1.1.min.js")
+    script(src="/jquery-ui.min.js")
+    link(rel="icon",href="favicon.png")
+    script(defer,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAvE45P0o02LXQfy6fSQUoluxgWQYPaCE&libraries=places,geometry&callback=buildMap")
+    script(defer,src="/CustomMarker.js")
+    script(src="/markerclusterer.js")
+    script(src="/socket-client.js")
+    script(src="/moment.js")
+    script(src="/app.js")
+body(ng-app="Logisthink" ng-controller="MyController" ng-init="socketing()")
+  //- main layout first
+  md-toolbar.background-white(md-scroll-shrink md-whiteframe="2")
+    div.md-toolbar-tools.background-white(layout-align="stretch")
+      img.logo(ng-src="logo.png")
+      span(flex)
+      md-nav-bar(flex layout="row" layout-align="center center" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links")
+        md-nav-item(md-nav-click="goto('page1')" name="operator") Operator
+        md-nav-item(md-nav-click="goto('page2')" name="manage") Manage
+      span(flex)
+      md-button.md-icon-button.md-accent(ng-click="chatPanel()")
+          md-tooltip(md-direction="bottom") Fitur Chat masih dalam bentuk Beta
+          md-icon.material-icons chat
+      badge(ng-if="unread != null") {{unread}}
+      md-button.md-icon-button.md-accent
+        md-tooltip(md-direction="bottom") Tidak tersedia untuk demo
+        md-icon.material-icons notifications
+      md-button.md-icon-button.md-warn(ng-click="toggleFullScreen()")
+        md-tooltip(md-direction="bottom") Fullscreen
+        md-icon.material-icons zoom_out_map
+      md-button.md-icon-button.md-warn(ng-click="logout()")
+        md-tooltip(md-direction="bottom") Logout/Keluar
+        md-icon.material-icons exit_to_app
+  //- content
+  div.main(layout="row" layout-align="center stretch")
+    //- left sidenav
+    md-sidenav.md-sidenav-left(md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" flex-gt-sm="15" layout="column")
+      md-input-container
+        label Cari...
+        input(ng-model="searchbox")
+        md-icon.material-icons search
+      md-divider
+      md-subhead(layout-padding)
+        md-icon.material-icons assignment
+        span  Pengiriman
+        br
+        small {{ongoing}} / {{jobs.length}} Total Pengiriman yang belum selesai
+      md-divider
+      div.order
+        md-list(flex)
+          md-list-item.md-3-line.md-dense(ng-if="job.order.status !='completed'" ng-repeat="job in jobs | filter:searchbox | orderBy:['-order.pickup_date']" ng-click="assignTo(job,$event)" )
+            div.md-list-item-text(layout="column")
+              label ID:{{"#"+job.order.id}}
+              small(style="font-size:10px;") {{job.pickup[0].address.split(",")[ job.pickup[0].address.split(",").length - 4 ]}} - 
+                small(style="font-size:10px;" ng-repeat="addr in job.delivery") {{addr.address.split(",")[addr.address.split(",").length - 4 ]}} {{$index != job.delivery.length - 1 ? " , ":""}}
+              small Status : <i class="{{job.order.status}}">{{job.order.status}} - <i class="{{del.status}}" ng-repeat="del in job.delivery">{{del.status}}<label ng-if="(job.delivery.length - 1) != $index"> , </label></i></i>
+      md-divider
+      md-subhead(layout-padding)
+        md-icon.material-icons airline_seat_recline_extra
+        span Supir
+      md-divider
+      div.drivers(flex md-no-margin ng-init)
+        md-list(flex)
+          md-list-item.md-3-line.md-dense(layout-align="start" ng-repeat="driver in drivers |filter:searchbox |orderBy:['-timestamp','-status']"  ng-click="goToDriver(driver)")
+            //- div(class="{{'user-icon driver'+driver.status}}" flex="80" layout-margin layout="row")
+            div.md-list-item-text(flex="80")
+              div(flex layout="column" )
+                b {{driver.name}}
+              div(flex layout="column")
+                label(class="driver{{driver.status}}") <b>{{driver.vehicle_id}}</b>
+                  br
+                  small {{driver.status}} - {{driver.timespace}}
+            md-menu
+              md-button.md-icon-button(ng-click="$mdMenu.open()" style="z-index:100;")
+                md-icon.material-icons more_verts
+              md-menu-content
+                md-menu-item
+                  md-button(ng-click="updateVehicle(driver,$event)") Assign mobil ke {{driver.name}}
+                md-menu-item
+                  md-button(ng-click="chatDriver(driver,$event)") Chat ke-{{driver.name}}  
+    //- maps
+    div.main-map#map
+    md-switch#traffic(aria-label="Traffic") Traffic
+    span#legends
+      div.pulse Status:Online
+      div.pulseoffline Status:Offline
+    a#locate(type="button",value="Locate").
+      #[i.material-icons gps_fixed]
+    //- right sidenav
+    conversation(flex-gt-sm="20" flex="20" layout-align="start stretch")
+      md-toolbar(md-theme="dark-orange" layout="row" layout-padding)
+        small {{roomactive}}
+        md-progress-circular.md-accent(md-mode="indeterminate" ng-if="conversation == null")
+        md-button.md-icon-button(ng-click="closeConversation()" style="position:absolute;float:right;right:0px;")
+          md-icon.material-icons close
+      chatcontent
+        
+        
+      md-toolbar.composer(md-theme="dark-orange" layout="row" layout-padding)
+        md-input-container
+          label(style="font-size:14px;") Pesan anda...
+          input.composed(type='text' ng-model="composed" ng-keyup="$event.keyCode == 13 && sendChat()")
+        md-button.md-icon-button.send(ng-click="sendChat()")
+          md-icon.material-icons send
+    md-sidenav.md-sidenav-right.conversation(md-component-id="right" flex-gt-sm="20" layout="column" layout-align="start")
+      md-toolbar(md-theme="dark-blue" layout="column" layout-padding)
+        md-subhead Chat Panel
+      md-divider
+      md-list(ng-controller="AppData" layout-align="center" layout="column")
+        small(style="font-size:10px;font-style:italic;color:gray;text-align:center;") {{srvmsg}}
+      div(layout="row" layout-sm="column" layout-align="space-around")
+        md-progress-circular.md-accent(md-mode="indeterminate" ng-if="room == null")
+      md-list(flex layout-align="start" layout="column")
+        div.md-list-item-text(layout-padding   ng-repeat="rooms in room | orderBy :'-timestamp'" ng-click="getConversation(rooms.channel,rooms.room,rooms.channelid)")
+          div(flex layout="column")
+            b {{rooms.room}}
+            md-button.md-icon-button.deletechat(ng-click="clearChat(rooms.channel,rooms.room)")
+              md-icon.material-icons delete
+            
+          div(flex layout="column")
+            small(ng-if="rooms.room == unreadfrom") <b>{{rooms.lastchat}}</b>
+            small(ng-if="rooms.room != unreadfrom") {{rooms.lastchat}}
+          
+          md-divider
+        
+  //- Context Menu
+
+  //- manage Page
+  div.manage(layout="row" flex="100" ng-init)
+    section.driver(flex)
+      div.md-toolbar-tools.background-white(md-whiteframe="2" md-scroll-shrink)
+        md-card-title(layout-margin) Supir
+        md-card-content 
+          md-input-container
+            label Cari supir/nopol
+            input(ng-model="searchdriver")
+            md-icon.material-icons(style="color:black;") search
+      md-card(ng-repeat="driver in drivers| filter:searchdriver")
+        md-card-title {{driver.name}}
+        md-card-content
+          md-icon.material-icons(layout-padding) local_shipping
+          label {{driver.vehicle_id}}
+          br
+          label(class="driver{{driver.status}}") Status : {{driver.status}}
+    section.orderall(flex md-scroll-shrink)
+      div.md-toolbar-tools.background-white(md-whiteframe="2" md-scroll-shrink)
+        md-card-title(layout-margin) Pengiriman
+        md-card-content 
+          md-input-container
+            label Filter(cth: Januari)
+            input(ng-model="searchallorder")
+            md-icon.material-icons(style="color:black;") search
+      md-card(ng-repeat="ordr in allorder | filter:searchallorder" flex)
+        md-card-title Order ID: #<b>{{ordr.order.id}}</b>
+        md-card-content
+          md-subhead <b>Pickup:</b>
+          md-list-item
+            md-list-item-text
+              label Jam ambil: <b><small>{{ordr.pickup[0].early_time}}</small></b>
+              br
+              label Sampai jam: <b><small>{{ordr.pickup[0].latest_hour}}</small></b>
+              br
+              label Alamat: <b><small>{{ordr.pickup[0].address}}</small></b>
+          br
+          md-subhead <b>Delivery:</b>
+          md-list-item(ng-repeat="delivery in ordr.delivery")
+              small {{$index+1}}. {{delivery.address}}
+        md-card-actions
+          md-button(md-theme="dark-orange" ng-click="orderDetail(ordr,$event)") Detail
+    section.order-completed(flex)
+      div.md-toolbar-tools.background-white(md-whiteframe="2" md-scroll-shrink)
+        md-card-title(layout-margin) Pengiriman Sukses
+        md-card-content 
+          md-input-container
+            label Filter(cth: Januari)
+            input(ng-model="searchallorder2")
+            md-icon.material-icons(style="color:black;") search
+      md-card(ng-repeat="ordr in allorder | filter:searchallorder2" ng-if="ordr.order.status == 'completed'" flex)
+        md-card-title Order ID: #<b>{{ordr.order.id}} - {{ordr.order.status}}</b>
+        md-card-content
+          md-subhead <b>Pickup:</b>
+          md-list-item
+            md-list-item-text
+              label Jam ambil: <b><small>{{ordr.pickup[0].early_time}}</small></b>
+              br
+              label Sampai jam: <b><small>{{ordr.pickup[0].latest_hour}}</small></b>
+              br
+              label Alamat: <b><small>{{ordr.pickup[0].address}}</small></b>
+          br
+          md-subhead <b>Delivery:</b>
+          md-list-item(ng-repeat="delivery in ordr.delivery")
+              small {{$index+1}}. {{delivery.address}}
+        md-card-actions
+          md-button(md-theme="dark-blue" ng-click="orderDetail(ordr,$event)") Detail
+    section.order-failed(flex)
+      div.md-toolbar-tools.background-white(md-whiteframe="2" md-scroll-shrink)
+        md-card-title(layout-margin) Pengiriman Gagal
+        md-card-content 
+          md-input-container
+            label Filter(cth: Januari)
+            input(ng-model="searchallorder3")
+            md-icon.material-icons(style="color:black;") search
+      md-card(ng-repeat="ordr in allorder | filter:searchallorder3" ng-if="ordr.order.status == 'failed' || ordr.order.status =='canceled'" flex)
+        md-card-title Order ID: #<b>{{ordr.order.id}} - {{ordr.order.status}}</b>
+        md-card-content
+          md-subhead <b>Pickup:</b>
+          md-list-item
+            md-list-item-text
+              label Jam ambil: <b><small>{{ordr.pickup[0].early_time}}</small></b>
+              br
+              label Sampai jam: <b><small>{{ordr.pickup[0].latest_hour}}</small></b>
+              br
+              label Alamat: <b><small>{{ordr.pickup[0].address}}</small></b>
+          br
+          md-subhead <b>Delivery:</b>
+          md-list-item(ng-repeat="delivery in ordr.delivery")
+              small {{$index+1}}. {{delivery.address}}
+        md-card-actions 
+          md-button.md-accent(ng-click="orderDetail(ordr,$event)") Jadwalkan ulang
